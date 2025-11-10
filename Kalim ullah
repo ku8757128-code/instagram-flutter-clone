@@ -1,0 +1,498 @@
+import React, { useState } from 'react';
+import { Home, Video, Film, Search, User, Upload, Settings, Phone, MessageCircle, Edit, Save, X, Play, Heart, MessageSquare, Share2, MoreVertical } from 'lucide-react';
+
+export default function FlyboardApp() {
+  const [activeTab, setActiveTab] = useState('home');
+  const [showStatus, setShowStatus] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const [profile, setProfile] = useState({
+    name: 'Aapka Naam',
+    bio: 'Mera bio yahan hai...',
+    followers: '1.2K',
+    following: '450',
+    posts: '89'
+  });
+
+  const [settings, setSettings] = useState({
+    dataServer: 'Auto',
+    videoQuality: 'HD'
+  });
+
+  // Sample data
+  const videos = [
+    { id: 1, user: 'User1', title: 'Amazing Video', likes: '12K', comments: '234' },
+    { id: 2, user: 'User2', title: 'Trending Now', likes: '45K', comments: '892' },
+    { id: 3, user: 'User3', title: 'Must Watch', likes: '23K', comments: '456' }
+  ];
+
+  const reels = [
+    { id: 1, user: 'Creator1', likes: '89K', comments: '1.2K' },
+    { id: 2, user: 'Creator2', likes: '56K', comments: '890' },
+    { id: 3, user: 'Creator3', likes: '34K', comments: '567' }
+  ];
+
+  const stories = [
+    { id: 1, user: 'Friend1', seen: false },
+    { id: 2, user: 'Friend2', seen: false },
+    { id: 3, user: 'Friend3', seen: true },
+    { id: 4, user: 'Friend4', seen: false }
+  ];
+
+  const contacts = [
+    { id: 1, name: 'Rahul Kumar', status: 'Online', avatar: 'RK' },
+    { id: 2, name: 'Priya Sharma', status: 'Offline', avatar: 'PS' },
+    { id: 3, name: 'Amit Singh', status: 'Online', avatar: 'AS' }
+  ];
+
+  // Home Screen with Status
+  const HomeScreen = () => (
+    <div className="flex-1 overflow-y-auto pb-20">
+      {/* Status Section */}
+      <div className="bg-white border-b p-4">
+        <h2 className="text-lg font-bold mb-3">Status</h2>
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          <div className="flex flex-col items-center min-w-[70px]">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-1">
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                <span className="text-2xl">+</span>
+              </div>
+            </div>
+            <span className="text-xs mt-1">Aapka Status</span>
+          </div>
+          {stories.map(story => (
+            <div key={story.id} className="flex flex-col items-center min-w-[70px]">
+              <div className={`w-16 h-16 rounded-full p-1 ${story.seen ? 'bg-gray-300' : 'bg-gradient-to-br from-purple-500 to-pink-500'}`}>
+                <div className="w-full h-full rounded-full bg-blue-200 flex items-center justify-center">
+                  <span className="text-sm font-bold">{story.user.slice(0,2)}</span>
+                </div>
+              </div>
+              <span className="text-xs mt-1">{story.user}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Contacts for Call/Message */}
+      <div className="bg-white p-4">
+        <h2 className="text-lg font-bold mb-3">संपर्क</h2>
+        {contacts.map(contact => (
+          <div key={contact.id} className="flex items-center justify-between mb-4 p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                {contact.avatar}
+              </div>
+              <div>
+                <p className="font-semibold">{contact.name}</p>
+                <p className="text-sm text-gray-500">{contact.status}</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button className="p-2 bg-green-500 rounded-full text-white">
+                <Phone className="w-4 h-4" />
+              </button>
+              <button className="p-2 bg-blue-500 rounded-full text-white">
+                <Video className="w-4 h-4" />
+              </button>
+              <button className="p-2 bg-purple-500 rounded-full text-white">
+                <MessageCircle className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Videos Screen (YouTube Style)
+  const VideosScreen = () => (
+    <div className="flex-1 overflow-y-auto pb-20">
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-4">Videos</h2>
+        {videos.map(video => (
+          <div key={video.id} className="mb-6 bg-white rounded-lg shadow">
+            <div className="relative">
+              <div className="w-full h-48 bg-gradient-to-br from-blue-400 to-purple-500 rounded-t-lg flex items-center justify-center">
+                <Play className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <div className="p-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                  {video.user.slice(0,2)}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold">{video.title}</h3>
+                  <p className="text-sm text-gray-500">{video.user}</p>
+                  <div className="flex gap-4 mt-2 text-sm text-gray-600">
+                    <span>{video.likes} likes</span>
+                    <span>{video.comments} comments</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-around mt-4 pt-4 border-t">
+                <button className="flex items-center gap-2">
+                  <Heart className="w-5 h-5" />
+                  <span>Like</span>
+                </button>
+                <button className="flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5" />
+                  <span>Comment</span>
+                </button>
+                <button className="flex items-center gap-2">
+                  <Share2 className="w-5 h-5" />
+                  <span>Share</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Reels Screen
+  const ReelsScreen = () => (
+    <div className="flex-1 overflow-y-auto pb-20 bg-black">
+      {reels.map(reel => (
+        <div key={reel.id} className="h-screen relative snap-start">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+            <Play className="w-20 h-20 text-white" />
+          </div>
+          <div className="absolute bottom-20 left-4 right-20 text-white">
+            <p className="font-bold mb-2">@{reel.user}</p>
+            <p className="text-sm">Amazing reel content here...</p>
+          </div>
+          <div className="absolute right-4 bottom-32 flex flex-col gap-6 items-center text-white">
+            <div className="flex flex-col items-center">
+              <Heart className="w-8 h-8 mb-1" />
+              <span className="text-xs">{reel.likes}</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <MessageCircle className="w-8 h-8 mb-1" />
+              <span className="text-xs">{reel.comments}</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <Share2 className="w-8 h-8 mb-1" />
+              <span className="text-xs">Share</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <MoreVertical className="w-8 h-8" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Class/Upload Screen
+  const ClassScreen = () => (
+    <div className="flex-1 overflow-y-auto pb-20 p-4">
+      <h2 className="text-xl font-bold mb-4">Class - Upload Content</h2>
+      
+      <div className="bg-white rounded-lg shadow p-6 mb-4">
+        <h3 className="font-semibold mb-4">नया Content Upload करें</h3>
+        
+        <div className="space-y-4">
+          <button className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition">
+            <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+            <p className="text-sm text-gray-600">Photo Upload करें</p>
+          </button>
+          
+          <button className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 transition">
+            <Video className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+            <p className="text-sm text-gray-600">Video Upload करें</p>
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="font-semibold mb-4">Editor Tools</h3>
+        <div className="grid grid-cols-2 gap-3">
+          <button className="p-4 bg-blue-50 rounded-lg flex flex-col items-center">
+            <Edit className="w-6 h-6 text-blue-500 mb-2" />
+            <span className="text-sm">Edit Photo</span>
+          </button>
+          <button className="p-4 bg-purple-50 rounded-lg flex flex-col items-center">
+            <Film className="w-6 h-6 text-purple-500 mb-2" />
+            <span className="text-sm">Edit Video</span>
+          </button>
+          <button className="p-4 bg-green-50 rounded-lg flex flex-col items-center">
+            <span className="text-2xl mb-2">🎵</span>
+            <span className="text-sm">Add Music</span>
+          </button>
+          <button className="p-4 bg-pink-50 rounded-lg flex flex-col items-center">
+            <span className="text-2xl mb-2">✨</span>
+            <span className="text-sm">Add Effects</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Search Screen
+  const SearchScreen = () => (
+    <div className="flex-1 overflow-y-auto pb-20 p-4">
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search accounts, videos..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <h3 className="font-bold mb-3">Popular Accounts</h3>
+      {[1,2,3,4,5].map(i => (
+        <div key={i} className="flex items-center justify-between mb-4 p-3 bg-white rounded-lg shadow">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold">
+              U{i}
+            </div>
+            <div>
+              <p className="font-semibold">User {i}</p>
+              <p className="text-sm text-gray-500">{i * 10}K followers</p>
+            </div>
+          </div>
+          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm">
+            Follow
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Profile Screen
+  const ProfileScreen = () => (
+    <div className="flex-1 overflow-y-auto pb-20">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-6 text-white">
+        <div className="flex justify-between items-start mb-4">
+          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center">
+            <User className="w-12 h-12 text-gray-400" />
+          </div>
+          <button 
+            onClick={() => setShowSettings(true)}
+            className="p-2 bg-white/20 rounded-lg"
+          >
+            <Settings className="w-6 h-6" />
+          </button>
+        </div>
+        <h2 className="text-2xl font-bold">{profile.name}</h2>
+        <p className="text-white/90 mt-2">{profile.bio}</p>
+      </div>
+
+      {/* Stats */}
+      <div className="flex justify-around py-6 bg-white border-b">
+        <div className="text-center">
+          <p className="text-2xl font-bold">{profile.posts}</p>
+          <p className="text-sm text-gray-600">Posts</p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold">{profile.followers}</p>
+          <p className="text-sm text-gray-600">Followers</p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold">{profile.following}</p>
+          <p className="text-sm text-gray-600">Following</p>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="p-4 bg-white">
+        <button 
+          onClick={() => setShowEditProfile(true)}
+          className="w-full py-3 bg-gray-100 rounded-lg font-semibold mb-3"
+        >
+          Edit Profile
+        </button>
+        <button className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold">
+          Share Profile
+        </button>
+      </div>
+
+      {/* Grid of posts */}
+      <div className="grid grid-cols-3 gap-1 p-1">
+        {[...Array(9)].map((_, i) => (
+          <div key={i} className="aspect-square bg-gradient-to-br from-blue-300 to-purple-400" />
+        ))}
+      </div>
+    </div>
+  );
+
+  // Settings Modal
+  const SettingsModal = () => (
+    <div className="fixed inset-0 bg-black/50 flex items-end z-50">
+      <div className="bg-white w-full rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Settings</h2>
+          <button onClick={() => setShowSettings(false)}>
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <label className="block font-semibold mb-3">Data Server</label>
+            <div className="space-y-2">
+              {['Auto', 'Server 1', 'Server 2', 'Server 3'].map(option => (
+                <button
+                  key={option}
+                  onClick={() => setSettings({...settings, dataServer: option})}
+                  className={`w-full p-3 rounded-lg text-left ${settings.dataServer === option ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-semibold mb-3">Video Quality</label>
+            <div className="space-y-2">
+              {['Low', 'Medium', 'HD', 'Full HD'].map(option => (
+                <button
+                  key={option}
+                  onClick={() => setSettings({...settings, videoQuality: option})}
+                  className={`w-full p-3 rounded-lg text-left ${settings.videoQuality === option ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button className="w-full py-3 bg-green-500 text-white rounded-lg font-semibold">
+            Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Edit Profile Modal
+  const EditProfileModal = () => (
+    <div className="fixed inset-0 bg-black/50 flex items-end z-50">
+      <div className="bg-white w-full rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Edit Profile</h2>
+          <button onClick={() => setShowEditProfile(false)}>
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block font-semibold mb-2">Name</label>
+            <input
+              type="text"
+              value={profile.name}
+              onChange={(e) => setProfile({...profile, name: e.target.value})}
+              className="w-full p-3 border rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label className="block font-semibold mb-2">Bio</label>
+            <textarea
+              value={profile.bio}
+              onChange={(e) => setProfile({...profile, bio: e.target.value})}
+              className="w-full p-3 border rounded-lg h-24"
+            />
+          </div>
+
+          <button 
+            onClick={() => setShowEditProfile(false)}
+            className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold"
+          >
+            <Save className="w-5 h-5 inline mr-2" />
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="h-screen bg-gray-50 flex flex-col max-w-md mx-auto">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Flyboard</h1>
+        <div className="flex gap-2">
+          <button className="p-2 bg-white/20 rounded-lg">
+            <Search className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-hidden">
+        {activeTab === 'home' && <HomeScreen />}
+        {activeTab === 'videos' && <VideosScreen />}
+        {activeTab === 'reels' && <ReelsScreen />}
+        {activeTab === 'class' && <ClassScreen />}
+        {activeTab === 'search' && <SearchScreen />}
+        {activeTab === 'profile' && <ProfileScreen />}
+      </div>
+
+      {/* Bottom Navigation */}
+      <div className="bg-white border-t flex justify-around items-center p-3">
+        <button 
+          onClick={() => setActiveTab('home')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'home' ? 'text-blue-600' : 'text-gray-600'}`}
+        >
+          <Home className="w-6 h-6" />
+          <span className="text-xs">Home</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('videos')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'videos' ? 'text-blue-600' : 'text-gray-600'}`}
+        >
+          <Video className="w-6 h-6" />
+          <span className="text-xs">Videos</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('reels')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'reels' ? 'text-blue-600' : 'text-gray-600'}`}
+        >
+          <Film className="w-6 h-6" />
+          <span className="text-xs">Reels</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('class')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'class' ? 'text-blue-600' : 'text-gray-600'}`}
+        >
+          <Upload className="w-6 h-6" />
+          <span className="text-xs">Class</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('search')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'search' ? 'text-blue-600' : 'text-gray-600'}`}
+        >
+          <Search className="w-6 h-6" />
+          <span className="text-xs">Search</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('profile')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'profile' ? 'text-blue-600' : 'text-gray-600'}`}
+        >
+          <User className="w-6 h-6" />
+          <span className="text-xs">Profile</span>
+        </button>
+      </div>
+
+      {/* Modals */}
+      {showSettings && <SettingsModal />}
+      {showEditProfile && <EditProfileModal />}
+    </div>
+  );
+}
